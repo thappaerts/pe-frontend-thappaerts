@@ -1,0 +1,21 @@
+name: ci
+
+on: [push]
+
+jobs:
+  Publish:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Docker build
+      run: |
+        docker build . -t thappaerts/pe_frontend:latest
+    - name: Login to DockerHub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.FRONTEND_NAME }}
+        password: ${{ secrets.FRONTEND_PASWOORD }}
+
+    - name: Docker push
+      run: |
+        docker push thappaerts/pe_frontend
